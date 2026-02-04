@@ -3,23 +3,19 @@ from app.utils import duel
 
 
 def battle(knights_config: dict) -> dict:
-    lancelot = Knight(knights_config["lancelot"])
-    arthur = Knight(knights_config["arthur"])
-    mordred = Knight(knights_config["mordred"])
-    red_knight = Knight(knights_config["red_knight"])
+    knights = {
+        key: Knight(config)
+        for key, config in knights_config.items()
+    }
 
-    knights = [lancelot, arthur, mordred, red_knight]
-
-    for knight in knights:
+    for knight in knights.values():
         knight.prepare()
 
-    # Battles
-    duel(lancelot, mordred)
-    duel(arthur, red_knight)
+    # Battles (by scenario)
+    duel(knights["lancelot"], knights["mordred"])
+    duel(knights["arthur"], knights["red_knight"])
 
     return {
-        lancelot.name: lancelot.hp,
-        arthur.name: arthur.hp,
-        mordred.name: mordred.hp,
-        red_knight.name: red_knight.hp,
+        knight.name: knight.hp
+        for knight in knights.values()
     }
